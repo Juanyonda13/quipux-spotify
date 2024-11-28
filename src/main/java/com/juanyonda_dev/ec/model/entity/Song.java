@@ -1,15 +1,12 @@
 package com.juanyonda_dev.ec.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,18 +14,24 @@ import java.util.List;
 @ToString
 @Builder
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name = "songs")
+public class Song {
     @Id
     @Column(name= "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name= "email")
-    private String email;
+    @Column(name= "title")
+    private String title;
 
-    @Column(name= "password")
-    private String password;
+    @Column(name= "artist")
+    private String artist;
+
+    @Column(name= "year")
+    private Integer year;
+
+    @Column(name= "genre")
+    private String genre;
 
     @CreationTimestamp
     @Column(name= "created_at")
@@ -38,13 +41,8 @@ public class User implements UserDetails {
     @Column(name= "updated_at")
     private Date updated_at;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getUsername() {
-        return "";
-    }
+    @ManyToOne
+    @JoinColumn(name = "playlist_id", nullable = false)
+    @JsonBackReference
+    private Playlist playlist;
 }
